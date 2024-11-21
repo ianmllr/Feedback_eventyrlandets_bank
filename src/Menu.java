@@ -207,12 +207,12 @@ public class Menu {
     private static void haevPenge(Bankkonto konto) {
         double withdrawnAmount;
         boolean open = true;
+        System.out.println("Konto " + konto.getAccountNumber() + " har en balance på " + konto.getBalance() + ".");
         while (open) {
             try {
-                System.out.println("Konto " + konto.getAccountNumber() + " har en balance på " + konto.getBalance() + ".");
                 System.out.println("Indtast beløbet som du ønsker at hæve fra kontoen.");
                 withdrawnAmount = input.nextDouble();
-                if (withdrawnAmount < konto.getBalance()) {
+                if (withdrawnAmount > konto.getBalance()) {
                     throw new InsufficientFundsException("Ikke nok penge på kontoen.");
                 } else if (withdrawnAmount > 0 && withdrawnAmount < 1000000000) {
                     konto.withdraw(withdrawnAmount);
