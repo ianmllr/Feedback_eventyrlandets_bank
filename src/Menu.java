@@ -34,56 +34,74 @@ public class Menu {
                     break;
 
                 case 2:
-                    for (Bankkonto bankkonto : konti) {
+                    if (!konti.isEmpty()) {
                         System.out.println("Konti: ");
-                        System.out.println("Konto " + bankkonto.getAccountNumber() + " har en balance på " + bankkonto.getBalance() + ".");
+                        for (Bankkonto bankkonto : konti) {
+                            System.out.println("Konto " + bankkonto.getAccountNumber() + " har en balance på " + bankkonto.getBalance() + ".");
+                        }
+                    } else {
+                        System.out.println("Ingen konti oprettet.");
                     }
                     break;
 
+
                 case 3:
-                    System.out.println("Indtast nummeret på den konto du ønsker at redigere.");
-                    Bankkonto chosenKonto;
-                    found = false;
-                    while (!found) {
-                        userInput = input.nextInt();
-                        try {
-                            chosenKonto = findKonto(userInput);
-                            redigerKonto(chosenKonto);
-                            found = true;
-                        } catch (AccountNotFoundException | InvalidAmountException e) {
-                            System.out.println(e.getMessage());
+                    if (!konti.isEmpty()) {
+                        System.out.println("Indtast nummeret på den konto du ønsker at redigere.");
+                        Bankkonto chosenKonto;
+                        found = false;
+                        while (!found) {
+                            userInput = input.nextInt();
+                            try {
+                                chosenKonto = findKonto(userInput);
+                                redigerKonto(chosenKonto);
+                                found = true;
+                            } catch (AccountNotFoundException | InvalidAmountException e) {
+                                System.out.println(e.getMessage());
+                            }
                         }
+                    } else {
+                        System.out.println("Ingen konti oprettet.");
                     }
                     break;
 
                 case 4:
-                    System.out.println("Indtast kontonummeret på kontoen du vil indsætte penge på.");
-                    Bankkonto chosenKonto2;
-                    found = false;
-                    while (!found) {
-                        userInput = input.nextInt();
-                        try {
-                            chosenKonto2 = findKonto(userInput);
-                            indsaetPenge(chosenKonto2);
-                            found = true;
-                        } catch (AccountNotFoundException e) {
-                            System.out.println(e.getMessage());
+                    if (!konti.isEmpty()) {
+                        Bankkonto chosenKonto2;
+                        found = false;
+                        System.out.println("Indtast kontonummeret på kontoen du vil indsætte penge på.");
+                        while (!found) {
+                            userInput = input.nextInt();
+                            try {
+                                chosenKonto2 = findKonto(userInput);
+                                indsaetPenge(chosenKonto2);
+                                found = true;
+                            } catch (AccountNotFoundException e) {
+                                System.out.println(e.getMessage());
+                            }
                         }
+                    } else {
+                        System.out.println("Ingen konti oprettet.");
                     }
                     break;
 
                 case 5:
-                    Bankkonto chosenKonto3;
-                    found = false;
-                    while (!found) {
-                        userInput = input.nextInt();
-                        try {
-                            chosenKonto3 = findKonto(userInput);
-                            haevPenge(chosenKonto3);
-                            found = true;
-                        } catch (AccountNotFoundException e) {
-                            System.out.println(e.getMessage());
+                    if (!konti.isEmpty()) {
+                        Bankkonto chosenKonto3;
+                        found = false;
+                        System.out.println("Indtast kontonummeret på kontoen du vil hæve penge fra.");
+                        while (!found) {
+                            userInput = input.nextInt();
+                            try {
+                                chosenKonto3 = findKonto(userInput);
+                                haevPenge(chosenKonto3);
+                                found = true;
+                            } catch (AccountNotFoundException e) {
+                                System.out.println(e.getMessage());
+                            }
                         }
+                    } else {
+                        System.out.println("Ingen konti oprettet.");
                     }
                     break;
 
@@ -123,7 +141,6 @@ public class Menu {
                 System.out.println("Indtast kontoens startbalance.");
                 newBalance = input.nextDouble();
                 if (newBalance > 0 && newBalance < 1000000000) {
-                    System.out.println("Konto oprettet.");
                     accountMade = true;
                 } else {
                     throw new InvalidAmountException("Ugyldigt beløb. Prøv igen.");
@@ -133,6 +150,7 @@ public class Menu {
             }
         }
         Bankkonto nyKonto = new Bankkonto(newAccountNumber, newBalance);
+        System.out.println("Konto " + nyKonto.getAccountNumber() + " oprettet med en balance på " + nyKonto.getBalance() + ".");
         konti.add(nyKonto); // tilføjer kontoen til arraylisten med konti
 
     }
@@ -160,7 +178,7 @@ public class Menu {
                 default:
                     System.out.println("Ugyldigt input. Prøv igen.");
             }
-            System.out.println("Konto " + chosenKonto.getAccountNumber() + " har nu en balance på " + chosenKonto.getBalance());
+            System.out.println("Konto opdateret.");
             closed = true;
         }
     }
@@ -175,6 +193,7 @@ public class Menu {
                 depositedAmount = input.nextDouble();
                 if (depositedAmount > 0 && depositedAmount < 1000000000) {
                     konto.deposit(depositedAmount);
+                    System.out.println("Konto " + konto.getAccountNumber() + " har nu en balance på " + konto.getBalance() + ".");
                     open = false;
                 } else {
                     throw new InvalidAmountException("Ugyldigt beløb. Prøv igen.");
@@ -193,8 +212,9 @@ public class Menu {
                 System.out.println("Konto " + konto.getAccountNumber() + " har en balance på " + konto.getBalance() + ".");
                 System.out.println("Indtast beløbet som du ønsker at hæve fra kontoen.");
                 withdrawnAmount = input.nextDouble();
-                if (withdrawnAmount > 0 && withdrawnAmount < 1000000000) {
+                if (withdrawnAmount > 0 && withdrawnAmount < 1000000000 && withdrawnAmount < konto.getBalance()) {
                     konto.withdraw(withdrawnAmount);
+                    System.out.println("Konto " + konto.getAccountNumber() + " har nu en balance på " + konto.getBalance() + ".");
                     open = false;
                 } else {
                     throw new InvalidAmountException("Ugyldigt beløb. Prøv igen.");
