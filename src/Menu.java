@@ -10,7 +10,7 @@ public class Menu {
         boolean close = false;
         int choice;
         int userInput;
-        boolean found = false;
+        boolean found;
 
         System.out.println("Velkommen til bankens admin side.");
 
@@ -34,9 +34,9 @@ public class Menu {
                     break;
 
                 case 2:
-                    for (int i = 0; i < konti.size(); i++) {
+                    for (Bankkonto bankkonto : konti) {
                         System.out.println("Konti: ");
-                        System.out.println("Konto " + konti.get(i).getAccountNumber() + " har en balance på " + konti.get(i).getBalance() + ".");
+                        System.out.println("Konto " + bankkonto.getAccountNumber() + " har en balance på " + bankkonto.getBalance() + ".");
                     }
                     break;
 
@@ -64,7 +64,7 @@ public class Menu {
                         userInput = input.nextInt();
                         try {
                             chosenKonto2 = findKonto(userInput);
-                            indsætPenge(chosenKonto2);
+                            indsaetPenge(chosenKonto2);
                             found = true;
                         } catch (AccountNotFoundException e) {
                             System.out.println(e.getMessage());
@@ -79,7 +79,7 @@ public class Menu {
                         userInput = input.nextInt();
                         try {
                             chosenKonto3 = findKonto(userInput);
-                            hævPenge(chosenKonto3);
+                            haevPenge(chosenKonto3);
                             found = true;
                         } catch (AccountNotFoundException e) {
                             System.out.println(e.getMessage());
@@ -165,7 +165,7 @@ public class Menu {
         }
     }
 
-    public static void indsætPenge(Bankkonto konto) {
+    public static void indsaetPenge(Bankkonto konto) {
         double depositedAmount;
         boolean open = true;
         while (open) {
@@ -185,7 +185,7 @@ public class Menu {
         }
     }
 
-    private static void hævPenge(Bankkonto konto) {
+    private static void haevPenge(Bankkonto konto) {
         double withdrawnAmount;
         boolean open = true;
         while (open) {
