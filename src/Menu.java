@@ -11,7 +11,7 @@ public class Menu {
         int userInput;
         boolean found;
 
-        System.out.println("Velkommen til bankens admin side.");
+        System.out.println("Velkommen til bankens admin side");
 
         while (!close) {
             System.out.println("1. Opret konto");

@@ -15,6 +15,7 @@ public class Bankkonto {
      this.balance = balance - amount;
     }
 
+    // gettere og settere
     public double getBalance() {
         return balance;
     }
