@@ -3,7 +3,6 @@ import java.util.Scanner;
 
 public class Menu {
     public final static Scanner input = new Scanner(System.in);
-
     static ArrayList<Bankkonto> konti = new ArrayList<>();
 
     public static void menu() {
@@ -43,7 +42,6 @@ public class Menu {
                         System.out.println("Ingen konti oprettet.");
                     }
                     break;
-
 
                 case 3:
                     if (!konti.isEmpty()) {
@@ -183,6 +181,7 @@ public class Menu {
         }
     }
 
+    // indsæt penge på konto
     public static void indsaetPenge(Bankkonto konto) {
         double depositedAmount;
         boolean open = true;
@@ -204,6 +203,7 @@ public class Menu {
         }
     }
 
+    // hæv penge fra konto
     private static void haevPenge(Bankkonto konto) {
         double withdrawnAmount;
         boolean open = true;
@@ -212,14 +212,16 @@ public class Menu {
                 System.out.println("Konto " + konto.getAccountNumber() + " har en balance på " + konto.getBalance() + ".");
                 System.out.println("Indtast beløbet som du ønsker at hæve fra kontoen.");
                 withdrawnAmount = input.nextDouble();
-                if (withdrawnAmount > 0 && withdrawnAmount < 1000000000 && withdrawnAmount < konto.getBalance()) {
+                if (withdrawnAmount < konto.getBalance()) {
+                    throw new InsufficientFundsException("Ikke nok penge på kontoen.");
+                } else if (withdrawnAmount > 0 && withdrawnAmount < 1000000000) {
                     konto.withdraw(withdrawnAmount);
                     System.out.println("Konto " + konto.getAccountNumber() + " har nu en balance på " + konto.getBalance() + ".");
                     open = false;
                 } else {
-                    throw new InvalidAmountException("Ugyldigt beløb. Prøv igen.");
+                    throw new InvalidAmountException("Ugyldigt beløb.");
                 }
-            } catch (InvalidAmountException e) {
+            } catch (InsufficientFundsException | InvalidAmountException e) {
                 System.out.println(e.getMessage());
             }
         }
